@@ -1,0 +1,24 @@
+https://docs.mongodb.com/php-library/master/
+https://github.com/mongodb/mongo-php-library
+http://docs.php.net/set.mongodb
+https://github.com/mongodb/mongo-php-library
+
+https://medium.com/@markustripp/getting-started-with-laravel-5-4-and-mongodb-1ad2892e473f
+https://medium.com/@markustripp/laravel-5-5-package-development-e72f3e7a8f38
+
+https://github.com/jenssegers/laravel-mongodb
+
+
+http://www.devmedia.com.br/utilizando-a-dupla-mongodb-e-php/27798
+
+https://pt.slideshare.net/arijunior/desenvolvimento-de-aplicaes-php-com-mongodb
+http://www.felipetoscano.com.br/blog/introducao-mongodb-php/
+
+https://github.com/Flynsarmy/laravel-csv-seeder
+
+https://medium.com/by-vinicius-reis/trabalhando-com-seeds-no-laravel-5-142829ddc32e
+
+
+
+php artisan make:seeder PicpayusersTableSeeder
+
