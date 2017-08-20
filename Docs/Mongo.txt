@@ -39,32 +39,16 @@ Authentication Options:
 
 file names: a list of files to run. files have to end in .js and will exit after unless --shell is specified
 
-Criando o usuario super e o do banco
 
-use admin
-db.createUser(
-  {
+** Criando o usuario super e o do banco. Criar um arquivo createUsers.js com o conteudo.
+
+db.createUser({
     user: "dbaAdmin",
     pwd: "abc123",
     roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
-  }
-)
-
-
-use picpaydb
-db.createUser(
-  {
+})
+db.createUser({
     user: "picpayUser",
     pwd: "picpay123",
-    roles: [ { role: "readWrite", db: "picpaydb" },
-             { role: "read", db: "reporting" } ]
-  }
-)
-db.createCollection("picpayusers");
-
-exit
-
-
-
-
-
+    roles: [ { role: "dbOwner", db: "picpaydb" }]
+})

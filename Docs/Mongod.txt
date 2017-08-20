@@ -114,3 +114,10 @@ WiredTiger options:
   --wiredTigerIndexPrefixCompression arg (=1)
                                         use prefix compression on row-store leaf pages
 
+** Iniciando o servidor e indicando uma pasta especifica criar um bat com o conteudo
+
+start mongod --directoryperdb --dbpath ./mongo-data
+
+
+
+
