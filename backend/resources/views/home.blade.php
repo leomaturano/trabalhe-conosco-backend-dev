@@ -12,17 +12,35 @@
                    
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">@</span>
-                        <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                        <input type="text" class="form-control" placeholder="Nome ou Username" aria-describedby="basic-addon1">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="btnPesquisar">
+                                Pesquisar
+                            </button>
+                        </span>
                     </div>
-
+                    <table class="table table-striped"> 
+                        <thead> 
+                            <tr> 
+                                <th>Chave</th> 
+                                <th>Nome</th> 
+                                <th>Id</th> 
+                            </tr> 
+                        </thead> 
+                        <tbody id="tableUsers"> 
+                            <tr class="ocultar" id="linhaModelo"> 
+                                <td name="id">id</td> 
+                                <td name="name"></td> 
+                                <td name="username"></td> 
+                            </tr> 
+                        </tbody> 
+                    </table>
                     <nav aria-label="mudar paginas">
-                        <ul class="pager">
-                            <li><a href="#">Anterior</a></li>
-                            <li><a href="#">Próxima</a></li>
+                        <ul class="pagination" id="listaPaginas">
+                            <span id="listaPaginasSpan"></span>
                         </ul>
                     </nav>
                 </div>
-
             </div>
         </div>
     </div>

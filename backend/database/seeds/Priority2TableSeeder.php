@@ -4,14 +4,13 @@
 
 use Jenssegers\Mongodb\Eloquent\Model;
 use Flynsarmy\CsvSeeder\CsvSeeder;
-use App\Picpayuser;
 
-class PicpayusersTableSeeder extends CsvSeeder
+class Priority2TableSeeder extends CsvSeeder
 {
 
     public function __construct()
     {
-        $arquivoCSV = realpath( base_path().'/../csvData' ) . DIRECTORY_SEPARATOR . 'users.csv';
+        $arquivoCSV = realpath( base_path().'/..' ) . DIRECTORY_SEPARATOR . 'lista_relevancia_2.txt';
 
         if (file_exists( $arquivoCSV )) {
             echo "\n.";
@@ -24,13 +23,10 @@ class PicpayusersTableSeeder extends CsvSeeder
         }
 
         $this->filename = $arquivoCSV;
-        $this->table = 'picpayusers';
-       // $this->model = 'Picpayuser';
+        $this->table = 'priority2';
         $this->offset_rows = 0;
         $this->mapping = [
             0 => 'id',
-            1 => 'nome',
-            2 => 'username',
         ];
     }
     
@@ -49,27 +45,22 @@ class PicpayusersTableSeeder extends CsvSeeder
         // Recommended when importing larger CSVs
         DB::disableQueryLog();
         
-        // Uncomment the below to wipe the table clean before populating 
+        // Uncomment the below to wipe the table clean before populating  ->default(PHP_INT_MAX)
         DB::table($this->table)->truncate();
 
         echo date('Y-m-d H:i:s');
         echo "\n.";
-        echo "Tempo estimado 3 minutos.";
+        echo "Tempo estimado ? minutos.";
         echo "\n.";
         parent::run();
 
-        // Seta um valor padrao para prioridade
-        DB::collection('picpayusers')->update( ["priority" => PHP_INT_MAX] );
-
-        $regCount = Picpayuser::count();
+        $regCount = DB::table($this->table)->count();
         echo "\n.";
-        if ($regCount != 8078162) {
-            echo "Possível erro na importação, o arquivo original possui 8.078.162 registros.";
-        }
         echo "Foram importados $regCount registros.";
         echo "\n.";
         echo date('Y-m-d H:i:s');
         echo "\n.";
         echo "\n.";
     }
+
 }

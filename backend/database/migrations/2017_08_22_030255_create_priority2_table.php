@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Schema;
 Use Jenssegers\Mongodb\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePicpayusersTable extends Migration
+class CreatePriority2Table extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +14,10 @@ class CreatePicpayusersTable extends Migration
      */
     public function up()
     {
-        Schema::create('picpayusers', function (Blueprint $table) {
+        Schema::create('priority2', function (Blueprint $table) {
             $table->unique('id');
-            $table->string('nome');
-            $table->string('username');
-            $table->integer('priority');
-            // $table->increments('id');
+            
+            //$table->increments('id');
             //$table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreatePicpayusersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('picpayusers');
+        Schema::dropIfExists('priority2');
     }
 }

@@ -21,3 +21,5 @@ Route::get('/noauth/user', function() {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/api/busca', 'BuscaController@index');
