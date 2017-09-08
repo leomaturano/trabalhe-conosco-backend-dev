@@ -24,24 +24,17 @@ class SetPrioritySeeder extends Seeder
                 ->update( ["priority" => 1 ] );
         */
 
-        echo "\n.";
-        echo date('Y-m-d H:i:s');
         echo "\n. Priorizando o nivel 2";
+        echo "\n. " . date('Y-m-d H:i:s');
         echo "\n.";
         
         $this->priorizar( DB::collection('priority2')->get(), 2);
 
-        echo "\n.";
-        echo date('Y-m-d H:i:s');
         echo "\n. Priorizando o nivel 1";
+        echo "\n. " . date('Y-m-d H:i:s');        
         echo "\n.";
 
         $this->priorizar( DB::collection('priority1')->get(), 1);
-  
-        echo "\n.";
-        echo date('Y-m-d H:i:s');
-        echo "\n.";
-        echo "\n.";
     }
 
     private function priorizar($arrId, $nivel)
@@ -50,8 +43,6 @@ class SetPrioritySeeder extends Seeder
             DB::collection('picpayusers')
             ->where('idpp', $value['idpp'])
             ->update( ["priority" => $nivel] );
-            
-            echo '.';
         }
     }
 }

@@ -14,16 +14,13 @@ class Priority2TableSeeder extends CsvSeeder
         $arquivoCSV = realpath( base_path().'/..' ) . DIRECTORY_SEPARATOR . 'lista_relevancia_2.txt';
 
         if (file_exists( $arquivoCSV )) {
-            echo "\n.";
-            echo "Importando o arquivo $arquivoCSV";
+            echo "\n. Importando o arquivo $arquivoCSV ";
             echo "\n.";
         } else {
-            echo "\n.";
-            echo "Arquivo nao encontrado: $arquivoCSV ";
+            echo "\n. Arquivo nao encontrado: $arquivoCSV ";
             echo "\n.";
         }
-        echo date('Y-m-d H:i:s');
-        echo "\n.";
+        echo "\n. " . date('Y-m-d H:i:s');
 
         $this->filename = $arquivoCSV;
         $this->table = 'priority2';
@@ -33,7 +30,6 @@ class Priority2TableSeeder extends CsvSeeder
         ];
     }
     
-
     /**
      * Run the database seeds.
      *
@@ -50,16 +46,6 @@ class Priority2TableSeeder extends CsvSeeder
         // Uncomment the below to wipe the table clean before populating  ->default(PHP_INT_MAX)
         DB::table($this->table)->truncate();
 
-        echo "\n. Importando Prioridades Nivel 2";
         parent::run();
-
-        $regCount = DB::table($this->table)->count();
-        echo "\n.";
-        echo "Foram importados $regCount registros.";
-        echo "\n.";
-        echo date('Y-m-d H:i:s');
-        echo "\n.";
-        echo "\n.";
     }
-
 }

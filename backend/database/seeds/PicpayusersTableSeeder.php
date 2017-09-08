@@ -15,20 +15,19 @@ class PicpayusersTableSeeder extends CsvSeeder
         $arquivoCSV = realpath( base_path().'/../csvData' ) . DIRECTORY_SEPARATOR . 'users.csv';
 
         if (file_exists( $arquivoCSV )) {
-            echo "\n.";
-            echo "Importando o arquivo $arquivoCSV";
+            echo "\n. Importando o arquivo $arquivoCSV ";
             echo "\n.";
         } else {
-            echo "\n.";
-            echo "Arquivo nao encontrado: $arquivoCSV ";
+            echo "\n. Arquivo nao encontrado: $arquivoCSV ";
             echo "\n.";
         }
-        echo date('Y-m-d H:i:s');
-        echo "\n.";
+        echo "\n. " . date('Y-m-d H:i:s');
+
+        // Aumenta para 100 linhas inseridas por vez.
+        $this->insert_chunk_size = 100;        
 
         $this->filename = $arquivoCSV;
         $this->table = 'picpayusers';
-       // $this->model = 'Picpayuser';
         $this->offset_rows = 0;
         $this->mapping = [
             0 => 'idpp',
@@ -52,26 +51,14 @@ class PicpayusersTableSeeder extends CsvSeeder
         
         // Uncomment the below to wipe the table clean before populating 
         DB::table($this->table)->truncate();
-
         
-        echo "\n. Importando PicPayUsersTable";
         parent::run();
 
-        // Seta um valor padrao para prioridade
-        // DB::collection('picpayusers')->update( ["priority" => 255] );
-
-        // $regCount = Picpayuser::count();
-        $regCount = 0;
-
-        echo "\n.";
+        $regCount = Picpayuser::count();
+        echo "\n. Foram importados $regCount registros.";
         if ($regCount != 8078162) {
-            echo "Possível erro na importação, o arquivo original possui 8.078.162 registros.";
+            echo "\n. Possível erro na importação, o arquivo original possui 8.078.162 registros.";
         }
-
-        echo "Foram importados $regCount registros.";
-        echo "\n.";
-        echo date('Y-m-d H:i:s');
-        echo "\n.";
         echo "\n.";
     }
 
@@ -83,8 +70,13 @@ class PicpayusersTableSeeder extends CsvSeeder
      */
 	public function insert( array $seedData )
 	{
-        // Altera o array incluindo a prioridade de acordo com o nivel.
         foreach ($seedData as $key => &$value ) {
+            // Acrescenta o campo de prioridade default
+            $value["priority"] = 255;
+        }
+        
+/* eliminada a priorização junto com a tabela aumentou o tempo em 4x            
+        // Altera o array incluindo a prioridade de acordo com o nivel.
             // Priorizando o nivel 2
             if ( DB::collection('priority2')->where('idpp', $value['idpp'])->count() > 0 ) {
                 $value["priority"] = 2;
@@ -93,15 +85,12 @@ class PicpayusersTableSeeder extends CsvSeeder
                 if ( DB::collection('priority1')->where('idpp', $value['idpp'])->count() > 0 ) {
                     $value["priority"] = 1;                    
                 } else {
-                    // Acrescenta o campo de prioridade default
-                    $value["priority"] = 255;                  
+                    $value["priority"] = 255;
                 }
             }
-        }
-        echo '.';
+*/            
 
         // Mantem a execução padrão sobre o Array alterado.
         return parent::insert( $seedData );
 	}
-
 }
