@@ -15,7 +15,7 @@ class CreatePriority2Table extends Migration
     public function up()
     {
         Schema::create('priority2', function (Blueprint $table) {
-            $table->unique('id');
+            $table->unique('idpp');
             
             //$table->increments('id');
             //$table->timestamps();

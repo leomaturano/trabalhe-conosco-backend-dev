@@ -1,0 +1,1 @@
+db.picpayusers.find({ priority: { $lt: 255 } })

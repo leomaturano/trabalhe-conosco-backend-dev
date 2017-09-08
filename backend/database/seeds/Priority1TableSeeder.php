@@ -1,9 +1,10 @@
 <?php
 
-//use Illuminate\Database\Seeder;
-
 use Jenssegers\Mongodb\Eloquent\Model;
+
+// https://github.com/Flynsarmy/laravel-csv-seeder
 use Flynsarmy\CsvSeeder\CsvSeeder;
+//use Illuminate\Database\Seeder;
 
 class Priority1TableSeeder extends CsvSeeder
 {
@@ -15,18 +16,20 @@ class Priority1TableSeeder extends CsvSeeder
         if (file_exists( $arquivoCSV )) {
             echo "\n.";
             echo "Importando o arquivo $arquivoCSV";
-            echo "\n...\n";
+            echo "\n.";
         } else {
             echo "\n.";
             echo "Arquivo nao encontrado: $arquivoCSV ";
             echo "\n.";
         }
+        echo date('Y-m-d H:i:s');
+        echo "\n.";
 
         $this->filename = $arquivoCSV;
         $this->table = 'priority1';
         $this->offset_rows = 0;
         $this->mapping = [
-            0 => 'id',
+            0 => 'idpp',
         ];
     }
     
@@ -41,15 +44,13 @@ class Priority1TableSeeder extends CsvSeeder
         // Este comando "desabilita" a proteção do método fill($data = []); nos models
         Model::unguard();
 
-        // https://github.com/Flynsarmy/laravel-csv-seeder
         // Recommended when importing larger CSVs
         DB::disableQueryLog();
         
         // Uncomment the below to wipe the table clean before populating  ->default(PHP_INT_MAX)
         DB::table($this->table)->truncate();
 
-        echo date('Y-m-d H:i:s');
-        echo "\n.";
+        echo "\n. Importando Prioridades Nivel 1";
         parent::run();
 
         $regCount = DB::table($this->table)->count();

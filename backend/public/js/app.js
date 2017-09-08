@@ -804,43 +804,47 @@ var app = new Vue({
 
 $(document).ready(function () {
     $("#btnPesquisar").click(function (e) {
+        carregarTabela(1);
         e.preventDefault();
-        //limpo o conteudo anterior
-        var clone = $("#linhaModelo").clone();
-        $("#tableUsers").text('');
-        clone.appendTo("#tableUsers");
+    });
+    /*
+            Usando Javascript  
+            var actionButton = document.querySelector('.action');
+            actionButton.addEventListener('click', myFunction);
+            
+             Usando jQuery 
+            $('.action').on('click', myFunction);
+    */
 
-        result = {
-            data: [{
-                id: 'xxx.xxx.001',
-                name: 'Nome 001',
-                username: "nome.001"
-            }, {
-                id: 'xxx.xxx.002',
-                name: 'Nome 002',
-                username: "nome.002"
-            }, {
-                id: 'xxx.xxx.003',
-                name: 'Nome 003',
-                username: "nome.003"
-            }],
-            paging: {
-                thispage: 13,
-                sizepage: 15,
-                totalpages: 20,
-                totalrows: 22
-            }
-        };
+    $("a.paginar").click(function (e) {
+        carregarTabela($(this).data("pagina"));
+        e.preventDefault();
+    });
+});
 
-        result.data.forEach(function (element) {
+function carregarTabela(pagina) {
+    //limpo o conteudo anterior da tabela
+    var clone = $("#linhaModelo").clone();
+    $("#tableUsers").text('');
+    clone.appendTo("#tableUsers");
+
+    //limpo o conteudo anterior da paginação
+    clone = $("#listaPaginasSpan").clone();
+    $("#listaPaginas").text('');
+    clone.appendTo("#listaPaginas");
+
+    var url = urlPage(pagina);
+
+    $.getJSON(url, function (result) {
+        $.each(result.data, function (indice, user) {
             clone = $("#linhaModelo").clone().removeClass("ocultar");
             clone.id = "";
-            clone.find("[name='id']").text(element.id);
-            clone.find("[name='name']").text(element.name);
-            clone.find("[name='username']").text(element.username);
+            clone.find("[name='id']").text(user.idpp);
+            clone.find("[name='name']").text(user.nome);
+            clone.find("[name='username']").text(user.username);
 
             clone.appendTo("#tableUsers");
-        }, this);
+        });
 
         var paginas = result.paging.totalpages < 10 ? result.paging.totalpages : 10;
 
@@ -850,20 +854,125 @@ $(document).ready(function () {
         var final = inicio + paginas - 1;
         if (final > result.paging.totalpages) final = result.paging.totalpages;
 
-        //limpo o conteudo anterior
-        clone = $("#listaPaginasSpan").clone();
-        $("#listaPaginas").text('');
-        clone.appendTo("#listaPaginas");
-
         //forma os botoes de pagina e atribui
         var ASPAS = '"';
         var textoHtml = "";
         if (inicio > 1) {
+            textoHtml = liBotaoPagina(false, inicio - 1, "Anterior");
+            $(textoHtml).appendTo("#listaPaginas");
+        }
+
+        textoHtml = "";
+        for (var index = inicio; index <= final; index++) {
+            textoHtml = liBotaoPagina(result.paging.thispage == index, index, index);
+            $(textoHtml).appendTo("#listaPaginas");
+        }
+
+        textoHtml = "";
+        if (result.paging.totalpages > final) {
+            textoHtml = liBotaoPagina(false, result.paging.thispage + 1, "Próxima");
+            $(textoHtml).appendTo("#listaPaginas");
+        }
+    });
+}
+
+/**
+ * Retorna a url com page = ao numero passado
+ * 
+ * @param {*} numeroPagina numero da pagina
+ */
+function urlPage(numeroPagina) {
+    if (typeof numeroPagina === "undefined") {
+        numeroPagina = 1;
+    }
+    var ret = document.location.origin + "/api/busca/?search=";
+    ret = ret + document.getElementById("campoPesquisa").value;
+    ret = ret + "&page=" + numeroPagina;
+
+    return ret;
+}
+
+/**
+ * Retorna os Botoes da paginação
+ * 
+ * @param {*} ativo   Se o Link vai ter a classe active
+ * @param {*} pagina  Pagina que o botão esta associado
+ * @param {*} texto   Texto que aperecera no botao
+ */
+function liBotaoPagina(ativo, pagina, texto) {
+    var ASPAS = '"';
+    var ret = "<li";
+    if (ativo) {
+        ret = ret + ' class="active" ';
+    }
+    ret = ret + '><a href="#void" class="paginar" data-pagina="' + pagina + ASPAS;
+    ret = ret + " >" + texto + "</a></li>";
+
+    return ret;
+}
+
+/*
+
+<button type="button" data-aluno="<?php echo $aluno; ?>" class="botaoAluno">Clique aqui</button>
+$(document).ready(function(){
+    $(document).on('click', '.botaoAluno', function(){
+        func();
+        var aluno = $(this).data('aluno');
+        var resposta = confirm("Deseja remover esse aluno?");
+
+         if (resposta == true) {
+              window.location.href = "del_aluno_done.php?aluno=" + aluno;
+         }
+         // ou pode manter a funcao à parte e chamar `confirmacao(aluno);` aqui dentro
+    });
+});
+
+<a href="#void" onclick="myFunction();">Executar JavaScript</a>
+
+function liBotaoPagina(ativo, pagina, texto){
+    const ASPAS = '"';
+    let ret  = "<li";
+    if ( ativo ) {
+        ret = ret + " class=" + ASPAS + "active" + ASPAS;
+    }
+    ret = ret + "><a href=";
+    ret = ret + ASPAS +  urlPage( pagina ) +  ASPAS;
+    ret = ret +" >" + texto + "</a></li>";
+
+    return ret;
+}
+*/
+
+/*
+        result.data.forEach(function (element) {
+            clone = $("#linhaModelo").clone().removeClass("ocultar");
+            clone.id = "";
+            clone.find("[name='id']").text(element.id);
+            clone.find("[name='name']").text(element.name);
+            clone.find("[name='username']").text(element.username);
+
+            clone.appendTo("#tableUsers");
+
+        }, this);
+
+        let paginas = (result.paging.totalpages < 10) ? result.paging.totalpages : 10;
+
+        let inicio = result.paging.thispage - paginas + 1;
+        if (inicio < 0) inicio = 1;
+
+        let final = inicio + paginas - 1;
+        if (final > result.paging.totalpages) final = result.paging.totalpages;
+
+
+        //forma os botoes de pagina e atribui
+        const ASPAS = '"';
+        let textoHtml = "";
+        if (inicio > 1) {
             textoHtml = "<li><a href=" + ASPAS + "pagina=";
             textoHtml = textoHtml + (inicio - 1);
-            textoHtml = textoHtml + ASPAS + ">";
-            textoHtml = textoHtml + "Anterior";
-            textoHtml = textoHtml + "</a></li>";
+            textoHtml = textoHtml + ASPAS + ">"
+            textoHtml = textoHtml + "Anterior"
+            textoHtml = textoHtml + "</a></li>"
 
             $(textoHtml).appendTo("#listaPaginas");
         }
@@ -887,14 +996,13 @@ $(document).ready(function () {
         if (result.paging.totalpages > final) {
             textoHtml = "<li><a href=" + ASPAS + "pagina=";
             textoHtml = textoHtml + (final + 1);
-            textoHtml = textoHtml + ASPAS + ">";
-            textoHtml = textoHtml + "Próxima";
-            textoHtml = textoHtml + "</a></li>";
+            textoHtml = textoHtml + ASPAS + ">"
+            textoHtml = textoHtml + "Próxima"
+            textoHtml = textoHtml + "</a></li>"
 
             $(textoHtml).appendTo("#listaPaginas");
         }
-    });
-});
+*/
 
 /***/ }),
 /* 10 */
@@ -41893,7 +42001,7 @@ var Component = __webpack_require__(37)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "F:\\PicPay\\backend\\resources\\assets\\js\\components\\Example.vue"
+Component.options.__file = "D:\\Dev\\PicPay\\backend\\resources\\assets\\js\\components\\Example.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
 

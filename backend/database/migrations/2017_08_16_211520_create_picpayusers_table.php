@@ -15,7 +15,7 @@ class CreatePicpayusersTable extends Migration
     public function up()
     {
         Schema::create('picpayusers', function (Blueprint $table) {
-            $table->unique('id');
+            $table->unique('idpp');
             $table->string('nome');
             $table->string('username');
             $table->integer('priority');

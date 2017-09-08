@@ -26,16 +26,48 @@ class BuscaController extends Controller
     public function index()
     {
         $search = Input::get('search');
-        $page = (int) Input::get('page', '0');
+        $page = (int) Input::get('page', '1');
+        $page = ($page - 1) < 0 ? 0 : $page - 1;
 
-        $result = Picpayuser::where('nome','like','%'.$search.'%')
-                    ->orWhere('username','like','%'.$search.'%')
-                    ->skip( ($page - 1) * 15 + 1)
+        $thisPage = $page + 1;
+        $sizePage = (int) Input::get('sizepage', '15');
+        $totalRows =  Picpayuser::where('nome', 'like', '%'.$search.'%')->orWhere('username', 'like', '%'.$search.'%')->count();
+        $resto = $totalRows % 15;
+        if ($resto > 0) {
+            $totalPages = intdiv( $totalRows, 15 )+1;
+        } else {
+            $totalPages = intdiv( $totalRows, 15 );
+        }
+
+        $result = Picpayuser::where('nome', 'like', '%'.$search.'%')
+                    ->orWhere('username', 'like', '%'.$search.'%')
+                    ->orderBy('priority')
+                    ->orderBy('idpp')
+                    ->skip( $page * 15 )
                     ->take(15)
                     ->get();
 
-                    //$users = User::orderBy('name', 'desc')->get();
-                    
-        return response()->json($result);
+        $retorno = [ 
+            "data" => $result,
+            "paging" => [
+                "thispage" => $thisPage,
+                "sizepage" => $sizePage,
+                "totalpages" => $totalPages,
+                "totalrows" => $totalRows
+            ]
+            ];
+
+        return response()->json($retorno);
     }
 }
+/*
+ db.picpayusers.find({$or:[{nome:{$regex:".*maria.*"}}, {username:{$regex:".*maria.*"}}]}).sort({priority: 1, idpp:1}).skip(0).limit(15).pretty()
+
+  paging: {
+                thispage: 13,
+                sizepage: 15,
+                totalpages: 20,
+                totalrows: 22,
+            },
+
+*/

@@ -13,26 +13,45 @@ class SetPrioritySeeder extends Seeder
      */
     public function run()
     {
-        echo "\n.";
-        echo date('Y-m-d H:i:s');
-        echo "\n.";
 
-        DB::collection('picpayusers')
-            ->join('priority2', 'picpayusers.id', '=', 'priority2.id')
-            ->update( ["priority" => 2 ] );
+        /* Join não funcionou com MongoDB
+            DB::collection('picpayusers')
+                ->join('priority2', 'picpayusers.idpp', '=', 'priority2.idp')
+                ->update( ["priority" => 2 ] );
 
-        echo "\n.";
-        echo date('Y-m-d H:i:s');
-        echo "\n.";
-    
-        DB::collection('picpayusers')
-            ->join('priority1', 'picpayusers.id', '=', 'priority1.id')
-            ->update( ["priority" => 1 ] );
+            DB::collection('picpayusers')
+                ->join('priority1', 'picpayusers.idpp', '=', 'priority1.idpp')
+                ->update( ["priority" => 1 ] );
+        */
 
         echo "\n.";
         echo date('Y-m-d H:i:s');
+        echo "\n. Priorizando o nivel 2";
         echo "\n.";
-        echo "\n.";        
-                
+        
+        $this->priorizar( DB::collection('priority2')->get(), 2);
+
+        echo "\n.";
+        echo date('Y-m-d H:i:s');
+        echo "\n. Priorizando o nivel 1";
+        echo "\n.";
+
+        $this->priorizar( DB::collection('priority1')->get(), 1);
+  
+        echo "\n.";
+        echo date('Y-m-d H:i:s');
+        echo "\n.";
+        echo "\n.";
+    }
+
+    private function priorizar($arrId, $nivel)
+    {
+        foreach ($arrId as $key => $value) {
+            DB::collection('picpayusers')
+            ->where('idpp', $value['idpp'])
+            ->update( ["priority" => $nivel] );
+            
+            echo '.';
+        }
     }
 }

@@ -12,7 +12,8 @@
                    
                     <div class="input-group">
                         <span class="input-group-addon" id="basic-addon1">@</span>
-                        <input type="text" class="form-control" placeholder="Nome ou Username" aria-describedby="basic-addon1">
+                        <input type="text" class="form-control" placeholder="Nome ou Username" aria-describedby="basic-addon1"
+                               id="campoPesquisa">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="button" id="btnPesquisar">
                                 Pesquisar
