@@ -26,13 +26,13 @@ class SetPrioritySeeder extends Seeder
 
         echo "\n. Priorizando o nivel 2";
         echo "\n. " . date('Y-m-d H:i:s');
-        echo "\n.";
+        echo "\n. ";
         
         $this->priorizar( DB::collection('priority2')->get(), 2);
 
         echo "\n. Priorizando o nivel 1";
         echo "\n. " . date('Y-m-d H:i:s');        
-        echo "\n.";
+        echo "\n. ";
 
         $this->priorizar( DB::collection('priority1')->get(), 1);
     }

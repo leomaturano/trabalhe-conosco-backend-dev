@@ -814,12 +814,12 @@ $(document).ready(function () {
             
              Usando jQuery 
             $('.action').on('click', myFunction);
+            
+            $("a.paginar").click(function (e) {
+                carregarTabela($(this).data("pagina"));
+                e.preventDefault();        
+            });
     */
-
-    $("a.paginar").click(function (e) {
-        carregarTabela($(this).data("pagina"));
-        e.preventDefault();
-    });
 });
 
 function carregarTabela(pagina) {
@@ -873,6 +873,11 @@ function carregarTabela(pagina) {
             textoHtml = liBotaoPagina(false, result.paging.thispage + 1, "Próxima");
             $(textoHtml).appendTo("#listaPaginas");
         }
+
+        $("a.paginar").click(function (e) {
+            carregarTabela($(this).data("pagina"));
+            e.preventDefault();
+        });
     });
 }
 
@@ -886,8 +891,8 @@ function urlPage(numeroPagina) {
         numeroPagina = 1;
     }
     var ret = document.location.origin + "/api/busca/?search=";
-    ret = ret + document.getElementById("campoPesquisa").value;
-    ret = ret + "&page=" + numeroPagina;
+    ret += document.getElementById("campoPesquisa").value;
+    ret += "&page=" + numeroPagina;
 
     return ret;
 }
@@ -903,15 +908,22 @@ function liBotaoPagina(ativo, pagina, texto) {
     var ASPAS = '"';
     var ret = "<li";
     if (ativo) {
-        ret = ret + ' class="active" ';
+        ret += ' class="active" ';
     }
-    ret = ret + '><a href="#void" class="paginar" data-pagina="' + pagina + ASPAS;
-    ret = ret + " >" + texto + "</a></li>";
+    ret += '><a href="#void" class="paginar" data-pagina="' + pagina + ASPAS;
+    ret += ' >' + texto + '</a></li>';
 
     return ret;
 }
 
 /*
+            
+            $(textoHtml).click(function (e) {
+                carregarTabela($(this).data("pagina"));
+                e.preventDefault();        
+            });
+        
+
 
 <button type="button" data-aluno="<?php echo $aluno; ?>" class="botaoAluno">Clique aqui</button>
 $(document).ready(function(){
@@ -933,11 +945,11 @@ function liBotaoPagina(ativo, pagina, texto){
     const ASPAS = '"';
     let ret  = "<li";
     if ( ativo ) {
-        ret = ret + " class=" + ASPAS + "active" + ASPAS;
+        ret +=  " class=" + ASPAS + "active" + ASPAS;
     }
-    ret = ret + "><a href=";
-    ret = ret + ASPAS +  urlPage( pagina ) +  ASPAS;
-    ret = ret +" >" + texto + "</a></li>";
+    ret +=  "><a href=";
+    ret +=  ASPAS +  urlPage( pagina ) +  ASPAS;
+    ret += " >" + texto + "</a></li>";
 
     return ret;
 }

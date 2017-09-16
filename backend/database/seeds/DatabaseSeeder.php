@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         echo "\n. Tempo estimado 10 minutos. Referencia Core I3, 8Gb";
         echo "\n. **** Inicio = " . date('Y-m-d H:i:s');
-        echo "\n.";
+        echo "\n. ";
 
         $this->call(Priority1TableSeeder::class);
         $this->call(Priority2TableSeeder::class);
@@ -22,6 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SetPrioritySeeder::class);
 
         echo "\n. **** Final = " . date('Y-m-d H:i:s');
-        echo "\n.";
+        echo "\n. ";
     }
 }

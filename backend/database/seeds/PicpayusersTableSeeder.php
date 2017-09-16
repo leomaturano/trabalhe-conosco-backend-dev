@@ -16,10 +16,10 @@ class PicpayusersTableSeeder extends CsvSeeder
 
         if (file_exists( $arquivoCSV )) {
             echo "\n. Importando o arquivo $arquivoCSV ";
-            echo "\n.";
+            echo "\n. ";
         } else {
             echo "\n. Arquivo nao encontrado: $arquivoCSV ";
-            echo "\n.";
+            echo "\n. ";
         }
         echo "\n. " . date('Y-m-d H:i:s');
 
@@ -59,7 +59,7 @@ class PicpayusersTableSeeder extends CsvSeeder
         if ($regCount != 8078162) {
             echo "\n. Possível erro na importação, o arquivo original possui 8.078.162 registros.";
         }
-        echo "\n.";
+        echo "\n. ";
     }
 
     /**

@@ -15,12 +15,13 @@ class Priority1TableSeeder extends CsvSeeder
 
         if (file_exists( $arquivoCSV )) {
             echo "\n. Importando o arquivo $arquivoCSV ";
-            echo "\n.";
+            echo "\n. ";
         } else {
             echo "\n. Arquivo nao encontrado: $arquivoCSV ";
-            echo "\n.";
+            echo "\n. ";
         }
         echo "\n. " . date('Y-m-d H:i:s');
+        echo "\n. ";
 
         $this->filename = $arquivoCSV;
         $this->table = 'priority1';
